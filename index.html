@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EduX — современный электронный дневник для учеников, родителей и учителей">
+    <title>EduX — Электронный дневник</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="EDUX.js" defer></script>
+</head>
+<body>
+
+    <!-- декоративный фоновый меш-градиент -->
+    <!-- <div class="bg-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div> -->
+    <!-- шапка с глассморфизмом -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav" aria-label="Основная навигация">
+                <a href="#" class="logo" aria-label="EduX - На главную">
+                    <span class="logo-text">Edu<span class="logo-accent">X</span></span>
+                </a>
+                
+                <ul class="nav-list">
+                    <li><a href="#contacts" class="nav-link">Контакты</a></li>
+                    <li><a href="#news" class="nav-link">Новости</a></li>
+                    <li><a href="#reviews" class="nav-link">Отзывы</a></li>
+                    <li><a href="#support" class="nav-link">Поддержка</a></li>
+                </ul>
+				<button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- герой первый экран -->
+        <section id="hero" class="hero">
+            <!-- <img class="parent"  src="assets/images/parent.png" alt=""> -->
+            <!-- плавающие декоративные шейпы -->
+            <!-- <div class="hero-shapes" aria-hidden="true">
+                <div class="shape shape-circle"></div>
+                <div class="shape shape-ring"></div>
+                <div class="shape shape-dot-grid"></div>
+            </div> -->
+
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            Новый учебный год 2026
+                        </div>
+                        <h1 class="hero-title">
+                            <span class="hero-title-line">Электронный</span>
+                            <span class="hero-title-line hero-title-accent">дневник</span>
+                        </h1>
+                        <p class="hero-subtitle">Умная платформа для учеников, родителей и учителей</p>
+                        <div class="hero-cta">
+                            <button id="openModal" class="btn btn-primary" aria-label="Войти в систему">
+                                <span class="btn-text">Войти</span>
+                                <span class="btn-glow"></span>
+                            </button>
+                            <a href="#news" class="btn btn-ghost">Узнать больше</a>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="hero-image-wrap">
+                        <div class="hero-image">
+                            
+                        </div>
+                        </div> -->
+                        <!-- карточки стикеры вокруг фото -->
+                        <!-- <div class="hero-stat hero-stat-1">
+                            <span class="stat-num" data-target="98%">98%</span>
+                            <span class="stat-label">Довольных учеников</span>
+                        </div>
+                        <div class="hero-stat hero-stat-2">
+                            <span class="stat-num" data-target="5K+">5K+</span>
+                            <span class="stat-label">Активных школ</span> -->
+                        </div>
+                    </div>
+                </div>
+        </section>
+        
+        <!-- новости & обновления -->
+        <section class="news" id="news">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Актуальное</span>
+                    <h2 class="section-title">Новости <span class="title-gradient">&amp;</span> обновления</h2>
+                </div>
+                
+                <div class="news-grid">
+                    <article class="news-card" style="--card-delay: 0.1s">
+                        <div class="news-card-image">
+                            <img src="assets/images/1-card.png" alt="">
+                            <div class="news-card-overlay"></div>
+                        </div>
+                        <div class="news-card-body">
+                            <span class="news-tag">Обновление</span>
+                            <h3 class="news-card-title">Добавлены достижения за успехи в учёбе, теперь можно отслеживать свой прогресс</h3>
+                            <a href="https://onlineschool-1.ru/blog/soft-skills/poleznye-privychki-kotorye-pomogut-dobitsya-uspeha-v-nbsp-uchebe/" class="news-read-more"" class="news-read-more">Читать →</a>
+                        </div>
+                        <!-- блик при наведении -->
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                    
+                    <article class="news-card" style="--card-delay: 0.25s">
+                        <div class="news-card-image">
+                            <img src="assets/images/2-card.png" alt="Новость 2">
+                            <div class="news-card-overlay"></div>
+                        </div>
+                        <div class="news-card-body">
+                            <span class="news-tag">Новость</span>
+                            <h3 class="news-card-title">С 2021 года в Калининградской области осуществляется поддержка студентов</h3>
+                            <a href="https://xn--80aabdc3aef1bhdbbd1amr9v.xn--p1ai/celevoe-obuchenie-2/" class="news-read-more"" class="news-read-more">Читать →</a>
+                        </div>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                    
+                    <article class="news-card" style="--card-delay: 0.4s">
+                        <div class="news-card-image">
+                            <img src="assets/images/3-card.png" alt="Новость 3">
+                            <div class="news-card-overlay"></div>
+                        </div>
+                        <div class="news-card-body">
+                            <span class="news-tag">События</span>
+                            <h3 class="news-card-title">Кабмин определил квоту приема на целевое обучение в вузах на 2026 год</h3>
+                            <a href="https://www.garant.ru/news/2064544/" class="news-read-more">Читать →</a>
+                        </div>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                </div>
+            </div>
+            <img class="reviews-man--1" src="assets/images/man2.png"  alt="">
+        </section>
+
+        <!-- отзывы пользователей -->
+        <section class="reviews" id="reviews">
+            <div class="reviews-bg-pattern" aria-hidden="true"></div>
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag section-tag-dark">Мнения</span>
+                    <h2 class="section-title section-title-dark">О Т З Ы В Ы</h2>
+                    <div class="section-dividers" aria-hidden="true">
+                        <span class="section-divider"></span>
+                        <span class="section-divider"></span>
+                    </div>
+                </div>
+                
+                <div class="reviews-grid">
+                    <article class="review-card--1" style="--card-delay: 0.1s">
+                        <div class="review-card-top">
+                            <div class="review-avatar-wrap">
+                                <img src="assets/images/avatar.png" alt="Мартин Артур Эдуардович" class="review-avatar">
+                                <div class="avatar-ring"></div>
+                            </div>
+                            <div class="review-stars" aria-label="5 звёзд">★★★★★</div>
+                        </div>
+                        <h3 class="review-name">Мартин Артур Эдуардович</h3>
+                        <div class="review-divider"></div>
+                        <p class="review-text">Мне как молодому специалисту «ЭлЖур» очень помогает организовать учебный процесс. Всё цифровое, понятное и быстрое. Особенно удобно работать с домашними заданиями и обратной связью для учеников.</p>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                    
+                    <article class="review-card--2" style="--card-delay: 0.25s">
+                        <div class="review-card-top">
+                            <div class="review-avatar-wrap">
+                                <img src="assets/images/avatar.png" alt="Кубрин Эдуард Валерьевич" class="review-avatar">
+                                <div class="avatar-ring"></div>
+                            </div>
+                            <div class="review-stars" aria-label="5 звёзд">★★★★★</div>
+                        </div>
+                        <h3 class="review-name">Кубрин Эдуард Валерьевич</h3>
+                        <div class="review-divider"></div>
+                        <p class="review-text">«ЭлЖур» стал незаменимым инструментом в моей повседневной работе. Удобно выставлять оценки, оставлять комментарии к заданиям и отслеживать успеваемость учеников.</p>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                    
+                    <article class="review-card--3" style="--card-delay: 0.4s">
+                        <div class="review-card-top">
+                            <div class="review-avatar-wrap">
+                                <img src="assets/images/avatar.png" alt="Касаткина Анна Сергеевна" class="review-avatar">
+                                <div class="avatar-ring"></div>
+                            </div>
+                            <div class="review-stars" aria-label="5 звёзд">★★★★★</div>
+                        </div>
+                        <h3 class="review-name">Касаткина Анна Сергеевна</h3>
+                        <div class="review-divider"></div>
+                        <p class="review-text">Работаю с электронным журналом «ЭлЖур» уже несколько лет. Особенно нравится, что все оценки и посещаемость всегда под рукой — не нужно вести бумажные записи.</p>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                    <article class="review-card--1" style="--card-delay: 0.1s">
+                        <div class="review-card-top">
+                            <div class="review-avatar-wrap">
+                                <img src="assets/images/avatar.png" alt="Мартин Артур Эдуардович" class="review-avatar">
+                                <div class="avatar-ring"></div>
+                            </div>
+                            <div class="review-stars" aria-label="5 звёзд">★★★★★</div>
+                        </div>
+                        <h3 class="review-name">Копытовский Егор Васильевич</h3>
+                        <div class="review-divider"></div>
+                        <p class="review-text">Признаюсь честно, после пятнадцати лет работы с бумажными журналами переходить на "цифру" было немного тревожно. Но интерфейс оказался на усмотрение весьма простым.</p>
+                        <div class="card-glare" aria-hidden="true"></div>
+                    </article>
+                </div>
+                
+                <div class="slider-dots" aria-hidden="true">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot dot-active"></span>
+                </div>
+            </div>
+        </section>
+        </div>
+
+        <!-- форма обратной связи и FAQ -->
+        <section class="contact-section" id="support">
+            <!-- <img class="review-man" src="assets/images/review-man.png" alt=""> -->
+            <div class="contact-bg-mesh" aria-hidden="true"></div>
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Связь</span>
+                    <h2 class="section-title section-title-light">Форма обратной связи</h2>
+                </div>
+                
+                <div class="contact-grid">
+                    <!-- форма для отправки вопросов -->
+                    <div class="contact-form-wrapper glass-card">
+                        <h3 class="contact-subtitle">написать в поддержку</h3>
+                        
+                        <form class="contact-form" action="#" method="post">
+                            <!-- floating label inputs -->
+                            <div class="form-group floating">
+                                <input type="text" id="name" name="name" placeholder=" " required aria-required="true" class="form-input">
+                                <label for="name" class="form-label">ФИО</label>
+                                <span class="input-line"></span>
+                            </div>
+                            
+                            <div class="form-group floating">
+                                <input type="email" id="email" name="email" placeholder=" " required aria-required="true" class="form-input">
+                                <label for="email" class="form-label">Ваша почта</label>
+                                <span class="input-line"></span>
+                            </div>
+                            
+                            <div class="form-group floating">
+                                <input type="tel" id="phone" name="phone" placeholder=" " class="form-input">
+                                <label for="phone" class="form-label">Номер телефона (+7)</label>
+                                <span class="input-line"></span>
+                            </div>
+                            
+                            <div class="form-group floating">
+                                <textarea id="message" name="message" placeholder=" " rows="4" required aria-required="true" class="form-textarea"></textarea>
+                                <label for="message" class="form-label">Ваш вопрос ?</label>
+                                <span class="input-line"></span>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <span class="btn-text">Отправить</span>
+                                <span class="btn-glow"></span>
+                            </button>
+                        </form>
+
+                        <div class="card-accent-corner" aria-hidden="true"></div>
+                    </div>
+                    
+                    <!-- FAQ аккордеон -->
+                    <div class="faq-wrapper glass-card">
+                        <h3 class="contact-subtitle">FAQ: часто задаваемые вопросы</h3>
+                        
+                        <details class="faq-item" open>
+                            <summary class="faq-question">Что делать, если забыл пароль?</summary>
+                            <div class="faq-answer">
+                                <p>Обратитесь к классному руководителю или администратору школы для восстановления доступа.</p>
+                            </div>
+                        </details>
+                        
+                        <details class="faq-item">
+                            <summary class="faq-question">Что такое ЭлЖур?</summary>
+                            <div class="faq-answer">
+                                <p>ЭлЖур — это электронный журнал и дневник, который позволяет отслеживать оценки, расписание и домашние задания онлайн.</p>
+                            </div>
+                        </details>
+                        
+                        <details class="faq-item">
+                            <summary class="faq-question">Где посмотреть оценки?</summary>
+                            <div class="faq-answer">
+                                <p>В разделе «Оценки» или «Дневник» после входа.</p>
+                            </div>
+                        </details>
+                        
+                        <details class="faq-item">
+                            <summary class="faq-question">Можно ли следить за несколькими детьми?</summary>
+                            <div class="faq-answer">
+                                <p>Да, если у вас есть доступ к их аккаунтам.</p>
+                            </div>
+                        </details>
+                        
+                        <details class="faq-item">
+                            <summary class="faq-question">Что делать, если сайт не открывается?</summary>
+                            <div class="faq-answer">
+                                <p>Проверьте интернет-соединение или попробуйте зайти позже.</p>
+                            </div>
+                        </details>
+
+                        <div class="card-accent-corner" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- подвал -->
+    <footer class="footer" id="contacts">
+        <div class="footer-top">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <!-- фикс: лого в футере на белом фоне "Edu" должен быть тёмным -->
+                        <span class="footer-logo-text">
+                            <span class="footer-logo-edu">Edu</span><span class="logo-accent">X</span>
+                        </span>
+                        <p class="footer-description">ЭлЖур — это современная электронная образовательная платформа, предназначенная для школ, учителей, учеников и родителей. Система позволяет удобно вести электронный журнал и дневник, отслеживать успеваемость, посещаемость и взаимодействовать в образовательном процессе в режиме онлайн.</p>
+                    </div>
+                    
+                    <div class="footer-contacts">
+                        <!-- телефон — инлайн SVG, никаких битых картинок -->
+                        <div class="footer-contact-item">
+                            <div class="footer-icon-wrap">
+                                <svg class="footer-svg-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.29 6.29l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <p class="footer-contact-label">телефон</p>
+                        </div>
+                        
+                        <!-- адрес -->
+                        <div class="footer-contact-item">
+                            <div class="footer-icon-wrap">
+                                <svg class="footer-svg-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <p class="footer-contact-label">адрес</p>
+                        </div>
+                        
+                        <!-- рабочие часы -->
+                        <div class="footer-contact-item">
+                            <div class="footer-icon-wrap">
+                                <svg class="footer-svg-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                            </div>
+                            <p class="footer-contact-label">рабочие часы</p>
+                        </div>
+                        
+                        <!-- почта — акцентная оранжевая -->
+                        <div class="footer-contact-item">
+                            <div class="footer-icon-wrap footer-icon-accent">
+                                <svg class="footer-svg-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <p class="footer-contact-label">почта</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container-bot">
+                <p class="footer-copyright">© 2026 ЭлЖур. Все права защищены.</p>
+                    <a class="footer-copyright--readme" href="#">Пользовательское соглашение</a>|
+                    <a class="footer-copyright--readme" href="#">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+    <!-- AUTH MODAL -->
+    <div class="auth-overlay" id="modal" aria-modal="true" role="dialog" aria-labelledby="authTitle">
+        <div class="auth-modal">
+            <button class="auth-close" id="closeModal" aria-label="Закрыть">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <!-- ВХОД -->
+            <div class="auth-panel auth-panel--active" id="panelLogin">
+                <div class="auth-logo">Edu<span>X</span></div>
+                <p class="auth-sub">Добро пожаловать обратно</p>
+
+                <div class="auth-field">
+                    <input type="text" id="loginUser" placeholder=" " autocomplete="username">
+                    <label for="loginUser">Логин</label>
+                </div>
+                <div class="auth-field">
+                    <input type="password" id="loginPass" placeholder=" " autocomplete="current-password">
+                    <label for="loginPass">Пароль</label>
+                </div>
+
+                <a href="#" class="auth-forgot" id="forgotBtn">Забыли пароль?</a>
+
+                <div id="forgotMsg" class="auth-msg">
+                    🔒 Обратитесь к системному администратору или к преподавателю для восстановления доступа.
+                </div>
+
+                <button class="auth-submit btn btn-primary">
+                    <span class="btn-text">Войти</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
