@@ -35,7 +35,7 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll(
-        '.news-card, .review-card, .section-header, .glass-card, .footer-contact-item, .hero-stat, .hero-badge, .hero-subtitle, .hero-cta'
+        '.news-card, .review-card, .section-header, .glass-card, .footer-contact-item, .hero-stat, .hero-badge, .hero-subtitle'
     ).forEach(el => observer.observe(el));
 
     //  3. ripple эффект на кнопках,чисто  

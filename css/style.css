@@ -141,7 +141,7 @@
     /* Полный фикс для FAQ в тёмной теме */
 [data-theme="dark"] .faq-question {
     background: rgba(255, 255, 255, 0.05); /* темный, слегка прозрачный фон вопроса */
-    color: #E2E8F0; /* Хорошо читаемый светлый текст заголовка */
+    color: #E2E8F0; /* хорошо читаемый светлый текст заголовка */
 }
 
 [data-theme="dark"] .faq-question:hover {
@@ -158,6 +158,21 @@
 
 [data-theme="dark"] .faq-item {
     border-color: rgba(255, 255, 255, 0.08); /* приглушенная граница вокруг блоков */
+}
+[data-theme="dark"] .footer-bottom {
+    background: #0D1117; /* Фиксируем правильный тёмный фон */
+    color: rgba(255, 255, 255, 0.5); /* Задаем цвет для разделителя "|" */
+}
+
+[data-theme="dark"] .footer-copyright,
+[data-theme="dark"] .footer-copyright--readme {
+    color: rgba(255, 255, 255, 0.5); /* Делаем текст светлым и читаемым */
+    transition: color var(--t-fast);
+}
+
+/* эффект свечения при наведении на ссылки в подвале */
+[data-theme="dark"] .footer-copyright--readme:hover {
+    color: var(--color-accent); /* при наведении будут красиво подсвечиваться оранжевым */
 }
 
 
@@ -549,7 +564,7 @@ ul {
     font-family: var(--font-main);
     font-weight: 800;
     font-size: 1.5rem;
-    color: var(--color-white);
+    color: #FFFFFF;
     letter-spacing: -0.5px;
     transition: transform var(--t-mid) var(--t-spring);
 }
@@ -733,7 +748,9 @@ ul {
     align-items: center;
     gap: 20px;
     flex-wrap: wrap;
-    animation: fadeInUp 0.7s var(--t-ease) 0.75s both;
+    animation: fadeInUp 0.5s var(--t-ease) 0.3s both;
+    will-change: transform, opacity; 
+    transform: translateZ(0);
 }
 
 /* правая часть hero — картинка с кольцом и статами */
@@ -895,6 +912,7 @@ ul {
     color: var(--color-dark-2);
     border: 1.5px solid rgba(45, 57, 75, 0.35);
     padding: clamp(11px, 2vw, 15px) clamp(24px, 3.5vw, 44px);
+    transform: translateZ(0);
 }
 
 .btn-ghost:hover {
@@ -1396,6 +1414,7 @@ ul {
     border-width: 0 0 90px 90px;
     border-color: transparent transparent var(--color-accent) transparent;
     opacity: 0.85;
+    pointer-events: none;
 }
 
 .contact-subtitle {
@@ -1646,6 +1665,12 @@ ul {
     animation: scaleIn 0.5s var(--t-spring) calc(var(--i, 0) * 0.1s + 0.2s) forwards;
 }
 
+.footer {
+    margin-top: -1px; /* сдвигаем футер на 1px вверх, чтобы перекрыть щель */
+    position: relative;
+    z-index: 10; /* держим его поверх фона */
+}
+
 /* нумерация элементов для stagger */
 .footer-contact-item:nth-child(1) { --i: 0; }
 .footer-contact-item:nth-child(2) { --i: 1; }
@@ -1777,6 +1802,13 @@ ul {
     }
     .contact-grid{
         flex-direction: column;
+    }
+    .contact-form .btn-full {
+        width: max-content;
+        align-self: flex-start;
+    }
+    .card-accent-corner {
+        border-width: 0 0 50px 50px;
     }
 }
 
