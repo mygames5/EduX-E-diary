@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduX — Личный кабинет</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS (mirrors style.css :root) ─── */
+    :root {
+      --color-dark:        #1E2A3A;
+      --color-dark-2:      #2D394B;
+      --color-dark-3:      #3d4f65;
+      --color-black:       #0D1117;
+      --color-accent:      #FF9B00;
+      --color-accent-2:    #FFB84D;
+      --color-accent-3:    #FF6B00;
+      --color-white:       #FFFFFF;
+      --color-off-white:   #F7F8FC;
+      --color-gray-light:  #EEF0F6;
+      --color-gray:        #8892A0;
+      --color-gray-dark:   #4A5568;
+      --glass-bg:          rgba(255,255,255,0.07);
+      --glass-bg-light:    rgba(255,255,255,0.92);
+      --glass-border:      rgba(255,255,255,0.15);
+      --glass-border-dark: rgba(255,255,255,0.08);
+      --font-main:         'Montserrat', sans-serif;
+      --font-accent:       'Space Grotesk', sans-serif;
+      --t-fast:  0.18s;
+      --t-mid:   0.35s;
+      --t-ease:  cubic-bezier(.4,0,.2,1);
+      --t-spring:cubic-bezier(.34,1.56,.64,1);
+      --shadow-sm:  0 4px 16px rgba(0,0,0,.12);
+      --shadow-md:  0 8px 32px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.10);
+      --shadow-lg:  0 16px 48px rgba(0,0,0,.22), 0 4px 16px rgba(0,0,0,.12);
+      --glow-accent: 0 0 20px rgba(255,155,0,.4), 0 0 60px rgba(255,155,0,.15);
+      --r-sm:  8px;
+      --r-md:  16px;
+      --r-lg:  24px;
+      --r-xl:  32px;
+      --r-pill:100px;
+
+      /* dashboard-specific */
+      --sidebar-w: 240px;
+      --sidebar-bg: #111827;
+      --main-bg:   #0D1117;
+      --panel-bg:  rgba(22,27,34,0.96);
+      --card-bg:   rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.07);
+      --text-primary:   #F0F4FF;
+      --text-secondary: #8892A0;
+      --text-muted:     rgba(255,255,255,0.35);
+    }
+
+    /* ─── RESET ─── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; height:100%; }
+    body {
+      font-family: var(--font-main);
+      background: var(--main-bg);
+      color: var(--text-primary);
+      height: 100%;
+      overflow: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(255,155,0,.07) 0%, transparent 60%),
+        radial-gradient(rgba(255,255,255,.025) 1.5px, transparent 1.5px);
+      background-size: 100% 100%, 28px 28px;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { max-width:100%; height:auto; display:block; }
+    button { cursor:pointer; border:none; background:none; font-family:inherit; }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width:4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--color-accent), var(--color-accent-3));
+      border-radius: var(--r-pill);
+    }
+
+    /* ─── APP SHELL ─── */
+    .edux_app {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr 280px;
+      grid-template-rows: 100vh;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════════════════
+      SIDEBAR
+    ════════════════════════════════════════ */
+    .edux_sidebar {
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 16px;
+      gap: 8px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 10;
+    }
+
+    .edux_sidebar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+      opacity: .6;
+    }
+
+    .edux_sidebar-logo {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      padding: 0 12px 28px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 12px;
+    }
+    .edux_sidebar-logo .edux_logo-x { color: var(--color-accent); }
+
+    .edux_sidebar-section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 8px 12px 4px;
+    }
+
+    .edux_nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: var(--r-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+      cursor: pointer;
+      position: relative;
+    }
+    .edux_nav-item:hover {
+      background: rgba(255,255,255,.06);
+      color: var(--text-primary);
+      transform: translateX(2px);
+    }
+    .edux_nav-item.active {
+      background: rgba(255,155,0,.12);
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+    .edux_nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 25%; bottom: 25%;
+      width: 3px;
+      background: var(--color-accent);
+      border-radius: 0 4px 4px 0;
+      box-shadow: var(--glow-accent);
+    }
+    .edux_nav-icon {
+      width: 18px; height: 18px;
+      flex-shrink: 0;
+      opacity: .7;
+    }
+    .edux_nav-item.active .edux_nav-icon { opacity: 1; }
+
+    .edux_nav-badge {
+      margin-left: auto;
+      background: var(--color-accent);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: var(--r-pill);
+    }
+
+    .edux_sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .edux_logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: var(--r-md);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: background var(--t-fast), color var(--t-fast);
+    }
+    .edux_logout-btn:hover {
+      background: rgba(255,80,80,.1);
+      color: #ff6b6b;
+    }
+
+    /* ════════════════════════════════════════
+       MAIN CONTENT
+    ════════════════════════════════════════ */
+    .edux_main {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── TOPBAR ── */
+    .edux_topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--card-border);
+      flex-shrink: 0;
+      background: rgba(13,17,23,.6);
+      backdrop-filter: blur(12px);
+    }
+
+    .edux_topbar-greeting h2 {
+      font-family: var(--font-accent);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .edux_topbar-greeting h2 span { color: var(--color-accent); }
+    .edux_topbar-greeting p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .edux_topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .edux_date-pill {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 7px 16px;
+      border-radius: var(--r-pill);
+      white-space: nowrap;
+    }
+
+    .edux_notif-btn {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      transition: background var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+      position: relative;
+    }
+    .edux_notif-btn:hover { background: rgba(255,155,0,.12); color: var(--color-accent); border-color: rgba(255,155,0,.3); }
+    .edux_notif-dot {
+      width: 8px; height: 8px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 6px; right: 6px;
+      border: 1.5px solid var(--main-bg);
+      box-shadow: 0 0 8px rgba(255,155,0,.6);
+    }
+
+    /* ── SCROLL AREA ── */
+    .edux_main-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 24px 28px;
+    }
+
+    /* ── STATS ROW ── */
+    .edux_stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .edux_stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color var(--t-mid), transform var(--t-mid), box-shadow var(--t-mid);
+      cursor: default;
+    }
+    .edux_stat-card:hover {
+      border-color: rgba(255,155,0,.3);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .edux_stat-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--r-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .edux_stat-icon.orange { background: rgba(255,155,0,.15); }
+    .edux_stat-icon.blue   { background: rgba(108,140,255,.15); }
+    .edux_stat-icon.green  { background: rgba(76,217,123,.15); }
+    .edux_stat-value {
+      font-family: var(--font-accent);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+    .edux_stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    /* ── CONTENT GRID ── */
+    .edux_content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ── PANEL BASE ── */
+    .edux_panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      transition: border-color var(--t-mid);
+    }
+    .edux_panel:hover { border-color: rgba(255,255,255,.12); }
+
+    .edux_panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .edux_panel-title {
+      font-family: var(--font-accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: var(--text-primary);
+    }
+    .edux_panel-action {
+      font-size: 0.72rem;
+      color: var(--color-accent);
+      font-weight: 600;
+      transition: opacity var(--t-fast);
+    }
+    .edux_panel-action:hover { opacity: .7; }
+
+    /* ── TIMETABLE ── */
+    .edux_timetable-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .edux_lesson-row {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .edux_lesson-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .edux_lesson-block {
+      border-radius: var(--r-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform var(--t-fast), filter var(--t-fast);
+    }
+    .edux_lesson-block:hover { transform: scale(1.01); filter: brightness(1.1); }
+
+    .edux_lesson-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .edux_lesson-duration {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,.65);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+    .edux_lesson-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.5);
+      flex-shrink: 0;
+    }
+
+    .edux_lb-blue   { background: linear-gradient(135deg,#4c6eff,#6c8cff); }
+    .edux_lb-red    { background: linear-gradient(135deg,#e05555,#ff7a7a); }
+    .edux_lb-green  { background: linear-gradient(135deg,#27ae60,#4cd97b); }
+    .edux_lb-yellow { background: linear-gradient(135deg,#f39c12,#ffc857); }
+    .edux_lb-cyan   { background: linear-gradient(135deg,#0097a7,#5ad1e6); }
+
+    /* ── GRADES ── */
+    .edux_grades-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+    }
+
+    .edux_grade-item {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-md);
+      padding: 14px 10px;
+      text-align: center;
+      transition: border-color var(--t-mid), transform var(--t-mid);
+    }
+    .edux_grade-item:hover {
+      border-color: rgba(255,155,0,.3);
+      transform: translateY(-2px);
+    }
+
+    .edux_grade-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-accent);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin: 0 auto 10px;
+      position: relative;
+    }
+    .edux_gc-5 {
+      background: rgba(76,217,123,.15);
+      color: #4cd97b;
+      box-shadow: 0 0 16px rgba(76,217,123,.2);
+    }
+    .edux_gc-4 {
+      background: rgba(108,140,255,.15);
+      color: #6c8cff;
+      box-shadow: 0 0 16px rgba(108,140,255,.2);
+    }
+    .edux_gc-3 {
+      background: rgba(255,155,0,.15);
+      color: var(--color-accent);
+      box-shadow: 0 0 16px rgba(255,155,0,.2);
+    }
+    .edux_grade-subject {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .edux_grade-meta {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    .edux_progress-section { margin-top: 16px; }
+    .edux_progress-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .edux_progress-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      flex: 0 0 80px;
+    }
+    .edux_progress-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,.06);
+      border-radius: var(--r-pill);
+      overflow: hidden;
+    }
+    .edux_progress-fill {
+      height: 100%;
+      border-radius: var(--r-pill);
+      background: linear-gradient(90deg, var(--color-accent-3), var(--color-accent-2));
+      transition: width 1s var(--t-ease);
+    }
+    .edux_progress-val {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      flex: 0 0 28px;
+      text-align: right;
+    }
+
+    /* ════════════════════════════════════════
+    RIGHT PANEL
+    ════════════════════════════════════════ */
+    .edux_right-panel {
+      border-left: 1px solid var(--card-border);
+      background: var(--sidebar-bg);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 24px 20px;
+      gap: 16px;
+    }
+
+    /* ── PROFILE CARD ── */
+    .edux_profile-card {
+      background: linear-gradient(135deg, rgba(255,155,0,.1), rgba(255,155,0,.04));
+      border: 1px solid rgba(255,155,0,.2);
+      border-radius: var(--r-xl);
+      padding: 24px 16px;
+      text-align: center;
+      position: relative;
+    }
+    .edux_profile-card::before {
+      content: '';
+      position: absolute;
+      top: -40px; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(255,155,0,.2), transparent 70%);
+      pointer-events: none;
+    }
+    .edux_profile-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 2.5px solid rgba(255,155,0,.5);
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, var(--color-dark-2), var(--color-dark-3));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 0 24px rgba(255,155,0,.2);
+      overflow: hidden;
+    }
+    .edux_profile-name {
+      font-family: var(--font-accent);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .edux_profile-role {
+      font-size: 0.75rem;
+      color: var(--color-accent);
+      font-weight: 600;
+      margin-top: 3px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .edux_profile-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .edux_pstat {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-md);
+      padding: 10px;
+      text-align: center;
+    }
+    .edux_pstat-val {
+      font-family: var(--font-accent);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .edux_pstat-label {
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ── INFO CARD ── */
+    .edux_info-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-lg);
+      padding: 16px;
+      transition: border-color var(--t-mid);
+    }
+    .edux_info-card:hover { border-color: rgba(255,255,255,.12); }
+
+    .edux_info-card-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── CALENDAR ── */
+    .edux_cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .edux_cal-month {
+      font-family: var(--font-accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: capitalize;
+    }
+    .edux_cal-nav {
+      display: flex;
+      gap: 4px;
+    }
+    .edux_cal-btn {
+      width: 28px; height: 28px;
+      border-radius: var(--r-sm);
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--t-fast), color var(--t-fast);
+    }
+    .edux_cal-btn:hover { background: rgba(255,155,0,.15); color: var(--color-accent); }
+
+    .edux_cal-week {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 2px;
+      margin-bottom: 6px;
+    }
+    .edux_cal-week span {
+      font-size: 0.6rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 0;
+    }
+    .edux_cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 2px;
+    }
+    .edux_cal-day {
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-radius: 6px;
+      transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+      cursor: pointer;
+    }
+    .edux_cal-day:hover { background: rgba(255,255,255,.07); color: var(--text-primary); transform: scale(1.1); }
+    .edux_cal-day.today {
+      background: var(--color-accent);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(255,155,0,.4);
+    }
+    .edux_cal-day.exam { background: rgba(255,80,80,.2); color: #ff7a7a; font-weight: 700; }
+    .edux_cal-day.homework { background: rgba(76,217,123,.2); color: #4cd97b; font-weight: 700; }
+
+    .edux_cal-legend {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .edux_legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+    }
+    .edux_legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ── COUNTDOWN ── */
+    .edux_countdown-card {
+      background: linear-gradient(135deg, rgba(108,140,255,.12), rgba(108,140,255,.04));
+      border: 1px solid rgba(108,140,255,.2);
+      border-radius: var(--r-lg);
+      padding: 20px;
+      text-align: center;
+    }
+    .edux_countdown-label {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 700;
+    }
+    .edux_countdown-number {
+      font-family: var(--font-accent);
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--text-primary);
+      line-height: 1;
+      margin: 8px 0 4px;
+    }
+    .edux_countdown-unit {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    .edux_countdown-bar {
+      height: 4px;
+      background: rgba(108,140,255,.15);
+      border-radius: var(--r-pill);
+      margin-top: 14px;
+      overflow: hidden;
+    }
+    .edux_countdown-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#4c6eff,#6c8cff);
+      border-radius: var(--r-pill);
+    }
+
+    /* ── UPCOMING EVENTS ── */
+    .edux_event-list { display: flex; flex-direction: column; gap: 8px; }
+    .edux_event-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--card-border);
+      transition: border-color var(--t-fast);
+    }
+    .edux_event-item:hover { border-color: rgba(255,155,0,.2); }
+    .edux_event-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .edux_event-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .edux_event-date {
+      font-size: 0.68rem;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* ─── ENTRANCE ANIMATIONS ─── */
+    @keyframes fadeSlideUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .edux_app > * { animation: fadeSlideUp .45s var(--t-ease) both; }
+    .edux_sidebar { animation-delay: 0s; }
+    .edux_main    { animation-delay: .08s; }
+    .edux_right-panel { animation-delay: .16s; }
+
+    .edux_stat-card { animation: fadeSlideUp .4s var(--t-ease) both; }
+    .edux_stat-card:nth-child(1) { animation-delay: .2s; }
+    .edux_stat-card:nth-child(2) { animation-delay: .28s; }
+    .edux_stat-card:nth-child(3) { animation-delay: .36s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1200px) {
+      .edux_app { grid-template-columns: 200px 1fr 240px; }
+    }
+
+    .edux_panel-action{
+      text-align: end;
+    }
+
+    @media (max-width: 1120px) {
+      .edux_app { grid-template-columns: 60px 1fr; }
+      .edux_right-panel { display: none; }
+      .edux_sidebar-logo, .edux_sidebar-section-label, .edux_nav-item span, .edux_nav-badge, .edux_sidebar-footer .edux_logout-label { display:none; }
+      .edux_sidebar { padding: 20px 8px; align-items: center; }
+      .edux_nav-item { justify-content: center; padding: 12px; }
+      .edux_nav-item::before { display: none; }
+    }
+    @media (max-width: 746px) {
+      .edux_app { grid-template-columns: 1fr; }
+      .edux_sidebar { display: none; }
+      .edux_content-grid { grid-template-columns: 1fr; }
+      .edux_stats-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="edux_app">
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="edux_sidebar">
+    <div class="edux_sidebar-logo">Edu<span class="edux_logo-x">X</span></div>
+
+    <div class="edux_sidebar-section-label">Главное</div>
+
+    <a class="edux_nav-item edux_active" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <span>Меню</span>
+    </a>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      <span>Оценки</span>
+      <span class="edux_nav-badge">3</span>
+    </a>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+      </svg>
+      <span>Достижения</span>
+    </a>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>Сообщения</span>
+    </a>
+
+    <div class="edux_sidebar-section-label" style="margin-top:8px;">Учёба</div>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span>Расписание</span>
+    </a>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      <span>Домашняя работа</span>
+    </a>
+
+    <a class="edux_nav-item" href="#">
+      <svg class="edux_nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+      </svg>
+      <span>Настройки</span>
+    </a>
+
+    <div class="edux_sidebar-footer">
+      <button class="edux_logout-btn" id="logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span class="edux_logout-label">Выйти</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN ══════════════ -->
+  <main class="edux_main">
+
+    <header class="edux_topbar">
+      <div class="edux_topbar-greeting">
+        <h2>Привет, <span>Admin</span> 👋</h2>
+        <p id="dateSubline">Загрузка...</p>
+      </div>
+      <div class="edux_topbar-right">
+        <div class="edux_date-pill" id="datePill">—</div>
+        <button class="edux_notif-btn" title="Уведомления">
+          <div class="edux_notif-dot"></div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="edux_main-scroll">
+
+      <!-- STAT CARDS -->
+      <div class="edux_stats-row">
+        <div class="edux_stat-card">
+          <div class="edux_stat-icon orange">⭐</div>
+          <div class="edux_stat-info">
+            <div class="edux_stat-value">4.82</div>
+            <div class="edux_stat-label">Средний балл</div>
+          </div>
+        </div>
+        <div class="edux_stat-card">
+          <div class="edux_stat-icon blue">📚</div>
+          <div class="edux_stat-info">
+            <div class="edux_stat-value">7</div>
+            <div class="edux_stat-label">Уроков сегодня</div>
+          </div>
+        </div>
+        <div class="edux_stat-card">
+          <div class="edux_stat-icon green">🏆</div>
+          <div class="edux_stat-info">
+            <div class="edux_stat-value">#2</div>
+            <div class="edux_stat-label">Место в группе</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN GRID -->
+      <div class="edux_content-grid">
+
+        <!-- TIMETABLE -->
+        <div class="edux_panel">
+          <div class="edux_panel-header">
+            <div class="edux_panel-title">📅 Расписание на сегодня</div>
+            <a class="edux_panel-action" href="#">Вся неделя →</a>
+          </div>
+          <div class="edux_timetable-list">
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">07:30</div>
+              <div class="edux_lesson-block edux_lb-blue">
+                <div><div class="edux_lesson-name">География</div><div class="edux_lesson-duration">07:30 – 08:15</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">08:25</div>
+              <div class="edux_lesson-block edux_lb-red">
+                <div><div class="edux_lesson-name">Физика</div><div class="edux_lesson-duration">08:25 – 09:10</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">09:20</div>
+              <div class="edux_lesson-block edux_lb-red">
+                <div><div class="edux_lesson-name">Физика</div><div class="edux_lesson-duration">09:20 – 10:05</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">10:15</div>
+              <div class="edux_lesson-block edux_lb-green">
+                <div><div class="edux_lesson-name">Химия</div><div class="edux_lesson-duration">10:15 – 11:00</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">11:15</div>
+              <div class="edux_lesson-block edux_lb-yellow">
+                <div><div class="edux_lesson-name">Физкультура</div><div class="edux_lesson-duration">11:15 – 12:00</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_vlesson-time">12:10</div>
+              <div class="edux_lesson-block edux_lb-cyan">
+                <div><div class="edux_lesson-name">Математика</div><div class="edux_lesson-duration">12:10 – 12:55</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+            <div class="edux_lesson-row">
+              <div class="edux_lesson-time">13:05</div>
+              <div class="edux_lesson-block edux_lb-cyan">
+                <div><div class="edux_lesson-name">Математика</div><div class="edux_lesson-duration">13:05 – 13:50</div></div>
+                <div class="edux_lesson-dot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRADES + PROGRESS -->
+        <div class="edux_panel">
+          <div class="edux_panel-header">
+            <div class="edux_panel-title">📊 Последние оценки</div>
+            <a class="edux_panel-action" href="#">Все оценки →</a>
+          </div>
+          <div class="edux_grades-grid">
+            <div class="edux_grade-item">
+              <div class="edux_grade-circle edux_gc-5">5</div>
+              <div class="edux_grade-subject">География</div>
+              <div class="edux_grade-meta">вчера</div>
+            </div>
+            <div class="edux_grade-item">
+              <div class="edux_grade-circle edux_gc-4">4</div>
+              <div class="edux_grade-subject">Физика</div>
+              <div class="edux_grade-meta">2 дня назад</div>
+            </div>
+            <div class="edux_grade-item">
+              <div class="edux_grade-circle edux_gc-3">3</div>
+              <div class="edux_grade-subject">Математика</div>
+              <div class="edux_grade-meta">3 дня назад</div>
+            </div>
+          </div>
+
+          <div class="edux_progress-section">
+            <div class="edux_panel-title" style="margin-bottom:14px;margin-top:18px;">Успеваемость по предметам</div>
+            <div class="edux_progress-row">
+              <div class="edux_progress-label">Математика</div>
+              <div class="edux_progress-bar"><div class="edux_progress-fill" style="width:72%"></div></div>
+              <div class="edux_progress-val">72%</div>
+            </div>
+            <div class="edux_progress-row">
+              <div class="edux_progress-label">Физика</div>
+              <div class="edux_progress-bar"><div class="edux_progress-fill" style="width:85%;background:linear-gradient(90deg,#4c6eff,#6c8cff)"></div></div>
+              <div class="edux_progress-val">85%</div>
+            </div>
+            <div class="edux_progress-row">
+              <div class="edux_progress-label">Химия</div>
+              <div class="edux_progress-bar"><div class="edux_progress-fill" style="width:91%;background:linear-gradient(90deg,#27ae60,#4cd97b)"></div></div>
+              <div class="edux_progress-val">91%</div>
+            </div>
+            <div class="edux_progress-row">
+              <div class="edux_progress-label">География</div>
+              <div class="edux_progress-bar"><div class="edux_progress-fill" style="width:96%;background:linear-gradient(90deg,#e05555,#ff7a7a)"></div></div>
+              <div class="edux_progress-val">96%</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ══════════════ RIGHT PANEL ══════════════ -->
+  <aside class="edux_right-panel">
+
+    <!-- PROFILE -->
+    <div class="edux_profile-card">
+      <div class="edux_profile-avatar">👤</div>
+      <div class="edux_profile-name">Иванов Иван</div>
+      <div class="edux_profile-role">Студент · 11А</div>
+      <div class="edux_profile-stats">
+        <div class="edux_pstat">
+          <div class="edux_pstat-val">4.82</div>
+          <div class="edux_pstat-label">Ср. балл</div>
+        </div>
+        <div class="edux_pstat">
+          <div class="edux_pstat-val">#2</div>
+          <div class="edux_pstat-label">В группе</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div class="edux_countdown-card">
+      <div class="edux_countdown-label">До выпуска</div>
+      <div class="edux_countdown-number">187</div>
+      <div class="edux_countdown-unit">дней осталось</div>
+      <div class="edux_countdown-bar">
+        <div class="edux_countdown-fill" style="width:49%"></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div class="edux_info-card">
+      <div class="edux_info-card-title">Календарь</div>
+      <div class="edux_cal-header">
+        <div class="edux_cal-month" id="calMonth">—</div>
+        <div class="edux_cal-nav">
+          <button class="edux_cal-btn" id="prevMonth">‹</button>
+          <button class="edux_cal-btn" id="nextMonth">›</button>
+        </div>
+      </div>
+      <div class="edux_cal-week">
+        <span>Пн</span><span>Вт</span><span>Ср</span>
+        <span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+      </div>
+      <div class="edux_cal-grid" id="calGrid"></div>
+      <div class="edux_cal-legend">
+        <div class="edux_legend-item"><div class="edux_legend-dot" style="background:#ff7a7a"></div>Экзамен</div>
+        <div class="edux_legend-item"><div class="edux_legend-dot" style="background:#4cd97b"></div>ДЗ</div>
+        <div class="edux_legend-item"><div class="edux_legend-dot" style="background:var(--color-accent)"></div>Сегодня</div>
+      </div>
+    </div>
+
+    <!-- EVENTS -->
+    <div class="edux_info-card">
+      <div class="edux_info-card-title">Ближайшие события</div>
+      <div class="edux_event-list">
+        <div class="edux_event-item">
+          <div class="edux_event-dot" style="background:#ff7a7a"></div>
+          <div class="edux_event-info">
+            <div class="edux_event-name">Экзамен по математике</div>
+            <div class="edux_event-date">31 мая 2026</div>
+          </div>
+        </div>
+        <div class="edux_event-item">
+          <div class="edux_event-dot" style="background:#4cd97b"></div>
+          <div class="edux_event-info">
+            <div class="edux_event-name">Сдача реферата по химии</div>
+            <div class="edux_event-date">18 мая 2026</div>
+          </div>
+        </div>
+        <div class="edux_event-item">
+          <div class="edux_event-dot" style="background:#6c8cff"></div>
+          <div class="edux_event-info">
+            <div class="edux_event-name">Олимпиада по физике</div>
+            <div class="edux_event-date">25 мая 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<script>
+  // ── LOGOUT ──
+  document.getElementById('logout').addEventListener('click', () => {
+    localStorage.removeItem('isAuth');
+    window.location.href = 'index.html';
+  });
+
+  // ── DATE DISPLAY ──
+  function getFormattedDate() {
+    return new Date().toLocaleDateString('ru-RU', {
+      weekday:'long', day:'numeric', month:'long', year:'numeric'
+    });
+  }
+  function getShortDate() {
+    return new Date().toLocaleDateString('ru-RU', { day:'numeric', month:'long' });
+  }
+  const datePill    = document.getElementById('datePill');
+  const dateSubline = document.getElementById('dateSubline');
+  datePill.textContent    = getShortDate();
+  dateSubline.textContent = getFormattedDate();
+  setInterval(() => {
+    datePill.textContent    = getShortDate();
+    dateSubline.textContent = getFormattedDate();
+  }, 60000);
+
+  // ── CALENDAR ──
+  const calGrid  = document.getElementById('calGrid');
+  const calMonth = document.getElementById('calMonth');
+  const prevBtn  = document.getElementById('prevMonth');
+  const nextBtn  = document.getElementById('nextMonth');
+
+  let viewDate = new Date();
+
+  const events = {
+    '2026-05-31': 'exam',
+    '2026-05-18': 'homework',
+  };
+
+  function renderCalendar(date) {
+    calGrid.innerHTML = '';
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDow = (new Date(year, month, 1).getDay() + 6) % 7; // Mon=0
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    calMonth.textContent = date.toLocaleString('ru', { month: 'long', year: 'numeric' });
+
+    for (let i = 0; i < firstDow; i++) {
+      calGrid.insertAdjacentHTML('beforeend', '<div></div>');
+    }
+
+    const today = new Date();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const full = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const div  = document.createElement('div');
+      div.className = 'cal-day';
+      div.textContent = d;
+      if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+        div.classList.add('today');
+      }
+      if (events[full]) div.classList.add(events[full]);
+      calGrid.appendChild(div);
+    }
+  }
+
+  prevBtn.onclick = () => { viewDate.setMonth(viewDate.getMonth()-1); renderCalendar(viewDate); };
+  nextBtn.onclick = () => { viewDate.setMonth(viewDate.getMonth()+1); renderCalendar(viewDate); };
+  renderCalendar(viewDate);
+
+  // ── 3D TILT ON STAT CARDS ──
+  document.querySelectorAll('.edux_stat-card, .edux_profile-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const tx = ((e.clientY - r.top)  / r.height - .5) * 8;
+      const ty = ((e.clientX - r.left) / r.width  - .5) * -8;
+      card.style.transform = `perspective(800px) rotateX(${tx}deg) rotateY(${ty}deg) scale3d(1.02,1.02,1.02)`;
+    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+  });
+</script>
+</body>
+</html>
